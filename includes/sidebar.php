@@ -8,10 +8,19 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Manage Users
                             </a>
+                            <a class="nav-link" href="add_user.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Add User
+                            </a>
                             <a class="nav-link" href="manage_properties.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                Manage _properties
+                                Manage properties
                             </a>
+                            <a class="nav-link" href="add_property.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Add Property
+                            </a>
+                            
                             <a class="nav-link" href="view_payment.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 View Payments
@@ -28,10 +37,7 @@
                             
                               
                            
-                    <div class="sb-sidenav-footer">
-                        <div class="small">Logged in as:</div>
-                        Start Bootstrap
-                    </div>
+                   
                 </nav>
             </div>
             <div id="layoutSidenav_content">

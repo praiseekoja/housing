@@ -6,6 +6,7 @@ $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = trim($_POST['username']);
+    $email = trim($_POST['email']);
     $password = trim($_POST['password']);
     $confirm_password = trim($_POST['confirm_password']);
     $role = $_POST['role'];
@@ -13,6 +14,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Basic validation
     if (empty($username)) {
         $errors[] = "Username is required.";
+    }
+    if (empty($email)) {
+        $errors[] = "Email is required.";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = "Invalid email format.";
     }
     if (empty($password)) {
         $errors[] = "Password is required.";
@@ -22,33 +28,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     
     // Check if username already exists
-    $check_username = $conn->prepare("SELECT * FROM users WHERE username = ?");
-    $check_username->bind_param('s', $username);
-    $check_username->execute();
-    $result = $check_username->get_result();
-    
-    if ($result->num_rows > 0) {
+    $check_username = mysqli_query($conn, "SELECT * FROM users WHERE username = '" . mysqli_real_escape_string($conn, $username) . "'");
+    if (mysqli_num_rows($check_username) > 0) {
         $errors[] = "Username already exists.";
+    }
+
+    // Check if email already exists
+    $check_email = mysqli_query($conn, "SELECT * FROM users WHERE email = '" . mysqli_real_escape_string($conn, $email) . "'");
+    if (mysqli_num_rows($check_email) > 0) {
+        $errors[] = "Email already exists.";
     }
 
     // If no errors, proceed with registration
     if (empty($errors)) {
-       // $hashed_password = password_hash($password, PASSWORD_DEFAULT);
         $hashed_password = $password;
-        $sql = "INSERT INTO users (username, password, role) VALUES (?, ?, ?)";
+        $sql = "INSERT INTO users (username, email, password, role) 
+                VALUES ('" . mysqli_real_escape_string($conn, $username) . "', 
+                        '" . mysqli_real_escape_string($conn, $email) . "', 
+                        '" . mysqli_real_escape_string($conn, $hashed_password) . "', 
+                        '" . mysqli_real_escape_string($conn, $role) . "')";
         
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param('sss', $username, $hashed_password, $role);
-        
-        if ($stmt->execute()) {
+        if (mysqli_query($conn, $sql)) {
             $_SESSION['user'] = [
-                'id' => $stmt->insert_id,
+                'id' => mysqli_insert_id($conn),
                 'username' => $username,
                 'role' => $role
             ];
             
-            // Redirect to the appropriate dashboard based on role
-            header('Location: index.php');
+            header('Location: user/login.php');
+            exit();
         } else {
             $errors[] = "Error during registration. Please try again.";
         }
@@ -88,6 +96,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <div class="mb-3">
                                 <label for="username" class="form-label">Username</label>
                                 <input type="text" class="form-control" id="username" name="username" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
                             </div>
                             
                             <div class="mb-3">

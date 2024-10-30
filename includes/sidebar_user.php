@@ -10,6 +10,10 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 View Owned Properties
                             </a>
+                            <a class="nav-link" href="profile.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Profile
+                            </a>
                             <?php elseif ($user['role'] == 'tenant'): ?>
                                 <a class="nav-link" href="available_properties.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
@@ -24,9 +28,13 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 View Payments
                             </a>
-                            <a class="nav-link" href="renew_rent.php">
+                            <!-- <a class="nav-link" href="renew_rent.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Renew Rent
+                            </a> -->
+                            <a class="nav-link" href="profile.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Profile
                             </a>
                             <?php endif; ?>
                             <a class="nav-link" href="logout.php">

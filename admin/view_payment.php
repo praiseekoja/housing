@@ -4,27 +4,25 @@ session_start();
 if (!isset($_SESSION['admin'])) {
     header('Location: login.php');
 }
-$sql = "SELECT payments.amount_paid, payments.payment_date, users.username, properties.property_name
+
+
+
+
+$payments = $conn->query("SELECT * FROM payments");
+$users = $conn->query("SELECT * FROM users");
+$properties = $conn->query("SELECT * FROM properties");
+
+$payments = $conn->query("SELECT payments.amount_paid, payments.payment_date, users.username, properties.property_name 
     FROM payments 
-    JOIN rentals ON payments.rent_id = rentals.id
-    JOIN users ON rentals.user_id = users.id 
-    JOIN properties ON rentals.property_id = properties.id
-    ORDER BY payments.payment_date DESC";
-$payments = $conn->query($sql);
-
-
-
-// $payments = $conn->query("SELECT payments.amount_paid, payments.payment_date, users.username, properties.property_name
-//     FROM payments 
-//     JOIN rentals ON payments.rent_id = rentals.id
-//     JOIN users ON rentals.user_id = users.id 
-//     JOIN properties ON rentals.property_id = properties.id
-//     ORDER BY payments.payment_date DESC");
+    JOIN users ON payments.user_id = users.id
+    JOIN properties ON payments.property_id = properties.id
+    ORDER BY payments.payment_date DESC");
     
 
 include('../includes/header.php');
 include('../includes/nav.php');
 include('../includes/sidebar.php');
+
 ?>
 
 <!DOCTYPE html>
@@ -50,8 +48,9 @@ include('../includes/sidebar.php');
             </thead>
             <tbody>
               
-                <?php var_dump($payments); while($row = $payments->fetch_assoc()): ?>
+                <?php  while($row = $payments->fetch_assoc()): ?>
                 <tr>
+                 
                     <td><?php echo htmlspecialchars($row['username']); ?></td>
                     <td><?php echo htmlspecialchars($row['property_name']); ?></td>
                     <td><?php echo htmlspecialchars($row['amount_paid']); ?></td>

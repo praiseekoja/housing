@@ -28,22 +28,25 @@ include('../includes/sidebar_user.php');
     <div class="container mt-5">
         <h1 class="mb-4"><?php echo $user['role'] == 'owner' ? 'Owned Properties' : 'Your Properties'; ?></h1>
         
-        <table class="table table-striped table-hover">
-            <thead class="table-dark">
-                <tr>
-                    <th>Property Name</th>
-                    <th>Address</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while ($property = $properties->fetch_assoc()): ?>
-                <tr>
-                    <td><?php echo $property['property_name']; ?></td>
-                    <td><?php echo $property['address']; ?></td>
-                </tr>
-                <?php endwhile; ?>
-            </tbody>
-        </table>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <?php while ($property = $properties->fetch_assoc()): ?>
+            <div class="col">
+                <div class="card h-100">
+                    <img src="<?php echo '../' . htmlspecialchars($property['image_path']); ?>" 
+                         class="card-img-top" 
+                         alt="<?php echo $property['property_name']; ?>"
+                         style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title"><?php echo $property['property_name']; ?></h5>
+                        <p class="card-text">
+                            <i class="fas fa-map-marker-alt"></i> 
+                            <?php echo $property['address']; ?>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <?php endwhile; ?>
+        </div>
         
         <a href="index.php" class="btn btn-primary mt-3">Back to Dashboard</a>
     </div>

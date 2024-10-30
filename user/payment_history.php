@@ -14,7 +14,7 @@ $payments = $conn->query("SELECT payments.*, properties.property_name FROM payme
 include('../includes/header.php');
 include('../includes/nav.php');
 include('../includes/sidebar_user.php');
-?>
+?> 
 
 
 <body class="bg-light">
